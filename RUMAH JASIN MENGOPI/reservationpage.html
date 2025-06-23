@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reservation - Rumah Jasin Mengopi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3eee7 url('backgroundcust_Nero_AI_Image_Upscaler_Photo_Face.jpeg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #d4b89d;
+      padding: 10px 25px;
+      border-bottom: 3px solid #4b3621;
+      position: relative;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .res-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #4b3621;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: #4b3621;
+      font-weight: bold;
+    }
+
+    /* Reservation Form */
+    .reservation-box {
+      max-width: 600px;
+      background-color: #efe2cd;
+      margin: 50px auto;
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
+      border: 3px solid #4b3621;
+    }
+
+    .reservation-box p {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #4b3621;
+    }
+
+    .reservation-box p span {
+      font-weight: bold;
+      color: #0077cc;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #4b3621;
+    }
+
+    select, input[type="date"], input[type="time"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+      background: #fdf6e9;
+      color: #333;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 70px;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    .button-row button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .confirm {
+      background-color: #4b3621;
+      color: #fff;
+    }
+
+    .cancel {
+      background-color: #d8b08c;
+      color: #4b3621;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <img src="logo_rjm-removebg-preview.png" alt="Logo" class="logo" />
+    </div>
+
+    <div class="header-center">
+      <div class="res-text">Reservation</div>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="#">HOME</a>
+      <a href="#">LOGOUT</a>
+    </div>
+  </div>
+
+  <!-- Reservation Form -->
+  <div class="reservation-box">
+    <p><span id="customerName">Customer's Name</span>, please complete the reservation details below.</p>
+
+    <form id="reservationForm">
+      <label for="date">DATE</label>
+      <input type="date" id="date" required />
+
+      <label for="time">TIME</label>
+      <input type="time" id="time" required />
+
+      <label for="table">TABLE NUMBER</label>
+      <select id="table" required>
+        <option value="T1">T1</option>
+        <option value="T2">T2</option>
+        <option value="T3">T3</option>
+        <option value="T4">T4</option>
+      </select>
+
+      <label for="remarks">REMARKS</label>
+      <textarea id="remarks" placeholder="Optional remarks..."></textarea>
+
+      <div class="button-row">
+        <button type="submit" class="confirm">Confirm Reservation</button>
+        <button type="button" class="cancel" onclick="cancelReservation()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Simulate getting customer name from login system
+    const loggedInCustomerName = localStorage.getItem("customerName") || "John Doe";
+    document.getElementById("customerName").textContent = loggedInCustomerName;
+
+    document.getElementById("reservationForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const date = document.getElementById("date").value;
+      const time = document.getElementById("time").value;
+      const table = document.getElementById("table").value;
+      const remarks = document.getElementById("remarks").value;
+
+      alert(`✅ Reservation Confirmed!\n\nCustomer: ${loggedInCustomerName}\nDate: ${date}\nTime: ${time}\nTable: ${table}`);
+      this.reset();
+    });
+
+    function cancelReservation() {
+      if (confirm("Are you sure you want to cancel this reservation?")) {
+        window.location.href = "home.html"; // Adjust to your actual home page
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rumah Jasin Mengopi - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background: url('background.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background-color: rgba(0, 0, 0, 0.65);
+      padding: 40px 30px;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .login-logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      object-fit: contain;
+    }
+
+    .login-title {
+      font-size: 24px;
+      margin-bottom: 30px;
+      font-weight: bold;
+      color: #f5deb3;
+      text-transform: uppercase;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #ffd6a5;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .radio-group label {
+      color: #eee;
+      font-weight: normal;
+      font-size: 14px;
+    }
+
+    .login-button {
+      background-color: #a47c55;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .login-button:hover {
+      background-color: #8b643d;
+    }
+
+    .extra {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .extra a {
+      color: #55ccff;
+      text-decoration: none;
+    }
+
+    .extra a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+
+      .login-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <img src="logo_rjm-removebg-preview.png" alt="RJ Logo" class="login-logo" />
+    <div class="login-title">Rumah Jasin Mengopi</div>
+
+    <form>
+      <div class="form-group">
+        <label>User :</label>
+        <div class="radio-group">
+          <label><input type="radio" name="user" value="staff" checked> Staff</label>
+          <label><input type="radio" name="user" value="customer"> Customer</label>
+          <label><input type="radio" name="user" value="admin"> Admin</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label id="id-label">Staff ID :</label>
+        <input type="text" id="id-input" placeholder="Enter your staff ID" required />
+      </div>
+
+      <div class="form-group">
+        <label>Password :</label>
+        <input type="password" placeholder="Enter your password" required />
+      </div>
+
+      <button class="login-button" type="submit">LOG IN</button>
+
+      <div class="extra" id="extra-links">
+        <p id="forgot-link"><a href="#">Forgot Your Password?</a></p>
+        <p id="signup-link">Don't have an account? <a href="C:\Users\admin\OneDrive\SEM 4\CSC264\RUMAH JASIN MENGOPI\registrationcust.html">Sign Up</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const radioButtons = document.querySelectorAll('input[name="user"]');
+    const forgotLink = document.getElementById("forgot-link");
+    const signupLink = document.getElementById("signup-link");
+    const idLabel = document.getElementById("id-label");
+    const idInput = document.getElementById("id-input");
+
+    function updateInterface() {
+      const selectedRole = document.querySelector('input[name="user"]:checked').value;
+
+      // Update label & placeholder
+      if (selectedRole === "staff") {
+        idLabel.textContent = "Staff ID :";
+        idInput.placeholder = "Enter your staff ID";
+        forgotLink.style.display = "block";
+        signupLink.style.display = "none";
+      } else if (selectedRole === "customer") {
+        idLabel.textContent = "Customer ID :";
+        idInput.placeholder = "Enter your customer ID";
+        forgotLink.style.display = "block";
+        signupLink.style.display = "block";
+      } else if (selectedRole === "admin") {
+        idLabel.textContent = "Admin ID :";
+        idInput.placeholder = "Enter your admin ID";
+        forgotLink.style.display = "none";
+        signupLink.style.display = "none";
+      }
+    }
+
+    // Init on page load
+    updateInterface();
+
+    // Listen for user role change
+    radioButtons.forEach(radio => {
+      radio.addEventListener("change", updateInterface);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rumah Jasin Mengopi - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-image: url('backgroundcust_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      color: #3e2b23;
+    }
+
+    header {
+      background: rgba(233, 203, 191, 0.9);
+	  background-color: #d4b89d;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #a77c5d;
+    }
+
+    header h1 {
+      font-size: 20px;
+      color: #5c3a28;
+      font-weight: 700;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .circle-btn {
+      width: 60px;
+      height: 60px;
+      background-color: #5c3a28;
+      color: #fff;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .circle-btn:hover {
+      background-color: #8b5e3c;
+    }
+
+    .welcome {
+      margin: 20px;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    .welcome span {
+      color: #2e8b8b;
+      font-weight: 700;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 0 20px 20px;
+    }
+
+    .card {
+      background: rgba(243, 235, 221, 0.95);
+      border: 4px solid #6f4f3c;
+      border-radius: 25px;
+      padding: 30px 10px;
+      text-align: center;
+      cursor: pointer;
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      background: rgba(225, 212, 196, 0.95);
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: #3d291b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>RUMAH JASIN MENGOPI</h1>
+    <nav>
+      <button class="circle-btn" onclick="location.href='#'">HOME</button>
+      <button class="circle-btn" onclick="location.href='#logout'">LOGOUT</button>
+    </nav>
+  </header>
+
+  <div class="welcome">
+    Welcome back, <span id="customerName">Customer’s Name</span>!
+  </div>
+
+  <div class="dashboard">
+   <div class="card" onclick="window.location.href='reservationpage.html'">
+  <img src="https://img.icons8.com/ios-filled/100/8b5e3c/calendar--v1.png" alt="Make Reservation"/>
+  <h3>MAKE RESERVATION</h3>
+</div>
+
+    <div class="card" onclick="alert('ORDER PRODUCTS')">
+      <img src="https://img.icons8.com/ios-filled/100/8b5e3c/shopping-basket-2.png" alt="Order Products"/>
+      <h3> ORDER PRODUCTS</h3>
+    </div>
+    <div class="card" onclick="alert('MY RESERVATIONS')">
+      <img src="https://img.icons8.com/ios-filled/100/8b5e3c/conference.png" alt="My Reservations"/>
+      <h3>MY RESERVATIONS</h3>
+    </div>
+    <div class="card" onclick="alert('MY ORDERS & PAYMENT')">
+      <img src="https://img.icons8.com/ios-filled/100/8b5e3c/receipt.png" alt="My Orders and Payments"/>
+      <h3>MY ORDERS & PAYMENT</h3>
+    </div>
+  </div>
+
+  <script>
+    const userName = "Aliya";
+    document.getElementById("customerName").textContent = userName;
+  </script>
+
+</body>
+</html>
