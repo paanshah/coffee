@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rumah Jasin Mengopi</title>
+  <style>
+    body {
+	font-family: Arial, sans-serif;
+	background-image: url('backgroundcust_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	margin: 0;
+	padding: 0;
+	}
+	.header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+	  display: flex; justify-content: space-between; align-items: center; background: #d7b899; padding: 20px; }
+      background-color: #d4b89d;
+      padding: 10px 25px;
+      border-bottom: 3px solid #4b3621;
+      position: relative;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .res-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #4b3621;
+    }
+    .nav-buttons {
+	display: flex;
+	justify-content: center;
+	gap: 30px;         
+	margin: 10px 0;   
+	}
+
+	
+    .nav-buttons a {
+	text-decoration: none;
+	 color: #4b3621;
+	font-weight: bold;
+	font-size: 20px;         
+	padding: 5px 10px;       
+	letter-spacing: 0.5px;   
+	}
+
+    
+	
+    .top-buttons button 
+	{ margin-left: 8px; padding: 8px 15px; background: #6b4f3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .search-container 
+	{ text-align: center; margin: 10px; }
+    .search-container input 
+	{ padding: 8px; width: 200px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; }
+    .nav-buttons 
+	{ text-align: center; margin: 10px 0; }
+    .tab-btn 
+	{ padding: 10px 20px; margin: 5px; background: #6b4f3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .tab-btn.active 
+	{ background: #9b7b62; }
+    .container 
+	{ display: flex; justify-content: center; flex-wrap: wrap; margin: 20px; }
+    .product-grid 
+	{ display: none; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .product-grid.active 
+	{ display: flex; }
+    .card {
+	background: #fff;
+	padding: 15px;
+	border-radius: 8px;
+	width: 220px; /* ⬆️ Make card a bit wider */
+	text-align: center;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+	transition: transform 0.2s;
+	}
+
+	.card:hover {
+	transform: scale(1.03);
+	}
+
+	.card img {
+	width: 100%;
+	height: 180px;              
+	object-fit: cover;          
+	object-position: center;   
+	border-radius: 6px;
+	background-color: #f9f4ef;  
+	}
+
+
+    .qty { display: flex; justify-content: center; align-items: center; margin-top: 10px; }
+    .qty button { padding: 5px 10px; background: #eee; border: none; border-radius: 4px; cursor: pointer; }
+    .qty input { width: 30px; text-align: center; border: none; background: #eee; margin: 0 5px; }
+    .confirm-order { text-align: center; margin: 40px 0; }
+    .confirm-order button { padding: 12px 30px; background: #6b4f3c; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <!-- Header with Home and Logout -->
+  <div class="header">
+    <div class="header-left">
+      <img src="logo_rjm-removebg-preview.png" alt="Logo" class="logo" />
+    </div>
+
+    <div class="header-center">
+      <div class="res-text">MENU</div>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="#">HOME</a>
+      <a href="#">LOGOUT</a>
+    </div>
+  </div>
+
+  <!-- Search Field -->
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterCards()" />
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="nav-buttons">
+    <button class="tab-btn active" onclick="showCategory('coffee')">COFFEE</button>
+    <button class="tab-btn" onclick="showCategory('pastries')">PASTRIES</button>
+    <button class="tab-btn" onclick="showCategory('merchandise')">MERCHANDISE</button>
+  </div>
+
+  <!-- Product Grids -->
+  <div class="container">
+    <!-- Coffee Section -->
+    <div class="product-grid active" id="coffee">
+      <div class="card">
+        <img src="lattepic.png" alt="Latte">
+        <h3 class="product-name">Latte</h3>
+        <label><input type="radio" name="Latte_temp" value="cold"> COLD RM7.00</label><br>
+        <label><input type="radio" name="Latte_temp" value="hot"> HOT RM6.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="mochapic.png" alt="Mocha">
+        <h3 class="product-name">Mocha</h3>
+        <label><input type="radio" name="Mocha_temp" value="cold"> COLD RM7.00</label><br>
+        <label><input type="radio" name="Mocha_temp" value="hot"> HOT RM6.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="matchapic.png"" alt="Matcha">
+        <h3 class="product-name">Matcha</h3>
+        <label><input type="radio" name="Matcha_temp" value="cold"> COLD RM7.00</label><br>
+        <label><input type="radio" name="Matcha_temp" value="hot"> HOT RM6.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="coklatpic.png" alt="Chocolate">
+        <h3 class="product-name">Chocolate</h3>
+        <label><input type="radio" name="Chocolate_temp" value="cold"> COLD RM7.00</label><br>
+        <label><input type="radio" name="Chocolate_temp" value="hot"> HOT RM6.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pastries Section -->
+    <div class="product-grid" id="pastries">
+      <div class="card">
+        <img src="images/pastries1.jpg" alt="Croissant">
+        <h3 class="product-name">Croissant</h3>
+        <label><input type="radio"> RM10.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/pastries2.jpg" alt="Curry Puff">
+        <h3 class="product-name">Curry Puff</h3>
+        <label><input type="radio"> RM4.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/pastries3.jpg" alt="Cheese Tart">
+        <h3 class="product-name">Cheese Tart</h3>
+        <label><input type="radio"> RM11.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/pastries4.jpg" alt="Cinnamon Roll">
+        <h3 class="product-name">Cinnamon Roll</h3>
+        <label><input type="radio"> RM13.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/pastries5.jpg" alt="Slice Cake">
+        <h3 class="product-name">Slice Cake</h3>
+        <label><input type="radio"> RM5.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Merchandise Section -->
+    <div class="product-grid" id="merchandise">
+      <div class="card">
+        <img src="images/merch1.jpg" alt="Coffee Mug">
+        <h3 class="product-name">Coffee Mug</h3>
+        <label><input type="radio"> RM15.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/merch2.jpg" alt="Tote Bag">
+        <h3 class="product-name">Tote Bag</h3>
+        <label><input type="radio"> RM25.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/merch3.jpg" alt="T-Shirt">
+        <h3 class="product-name">T-Shirt</h3>
+        <label><input type="radio"> RM35.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/merch4.jpg" alt="Cap">
+        <h3 class="product-name">Cap</h3>
+        <label><input type="radio"> RM20.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+      <div class="card">
+        <img src="images/merch5.jpg" alt="Stainless Tumbler">
+        <h3 class="product-name">Stainless Tumbler</h3>
+        <label><input type="radio"> RM45.00</label>
+        <div class="qty">
+          <button onclick="adjustQty(this, -1)">-</button>
+          <input type="text" value="0">
+          <button onclick="adjustQty(this, 1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Order -->
+  <div class="confirm-order">
+    <button onclick="confirmOrder()">Confirm Order</button>
+  </div>
+
+  <!-- Script -->
+  <script>
+    const categories = ['coffee','pastries','merchandise'];
+    function showCategory(id) {
+      categories.forEach(c => {
+        document.getElementById(c).classList.remove('active');
+        document.querySelector(`.tab-btn[onclick="showCategory('${c}')"]`).classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+      document.querySelector(`.tab-btn[onclick="showCategory('${id}')"]`).classList.add('active');
+    }
+
+    function adjustQty(btn,delta){
+      const inp = btn.parentElement.querySelector('input');
+      const v = Math.max(0,(parseInt(inp.value)||0)+delta);
+      inp.value = v;
+    }
+
+    function filterCards(){
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const active = document.querySelector('.product-grid.active');
+      active.querySelectorAll('.card').forEach(c=>{
+        const name = c.querySelector('.product-name').innerText.toLowerCase();
+        c.style.display = name.includes(q)?'':'none';
+      });
+    }
+
+    function confirmOrder(){
+      alert('Order confirmed! ✅');
+    }
+  </script>
+</body>
+</html>
