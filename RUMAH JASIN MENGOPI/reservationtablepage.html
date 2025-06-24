@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservation List | Rumah Jasin Mengopi</title>
+  <style>
+   * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f3eee7 url('backgroundcust_Nero_AI_Image_Upscaler_Photo_Face.jpeg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #d4b89d;
+      padding: 10px 25px;
+      border-bottom: 3px solid #4b3621;
+      position: relative;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .res-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #4b3621;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: #4b3621;
+      font-weight: bold;
+    }
+
+
+    .menu {
+      display: flex;
+      gap: 20px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #4B2E2B;
+      font-weight: bold;
+    }
+
+    .container {
+      background-color: #f1e4cc;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      border: 3px solid #4B2E2B;
+    }
+
+    .container h2 {
+      color: #007B9A;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #4B2E2B;
+      color: white;
+    }
+
+    .cancelled {
+      background-color: #e74c3c;
+      color: white;
+      font-weight: bold;
+    }
+
+    .booked {
+      background-color: #00bcd4;
+      color: white;
+      font-weight: bold;
+    }
+
+    .done {
+      background-color: #27ae60;
+      color: white;
+      font-weight: bold;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-details {
+      background-color: #00897b;
+      color: white;
+    }
+
+    .btn-cancel {
+      background-color: #c0392b;
+      color: white;
+    }
+
+    .back-button {
+      margin-top: 20px;
+      background-color: #e0bfa3;
+      color: #4B2E2B;
+      padding: 10px 20px;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+ <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <img src="logo_rjm-removebg-preview.png" alt="Logo" class="logo" />
+    </div>
+
+    <div class="header-center">
+      <div class="res-text">Reservation</div>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="#">HOME</a>
+      <a href="#">LOGOUT</a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <h2><span style="color:#007B9A;">Customer’s Name</span>’s Reservations</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>DATE</th>
+          <th>TIME</th>
+          <th>TABLE</th>
+          <th>STATUS</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:white;">R002</strong></td>
+          <td class="cancelled">01-06-2025</td>
+          <td class="cancelled">06:30PM</td>
+          <td class="cancelled">T1</td>
+          <td class="cancelled">CANCELLED</td>
+          <td class="cancelled"><button class="btn btn-details">DETAILS</button></td>
+        </tr>
+        <tr>
+          <td><strong style="color:white;">R001</strong></td>
+          <td class="booked">29-05-2025</td>
+          <td class="booked">07:00PM</td>
+          <td class="booked">T2</td>
+          <td class="booked">BOOKED</td>
+          <td class="booked"><button class="btn btn-cancel">CANCEL</button></td>
+        </tr>
+        <tr>
+          <td><strong style="color:white;">R002</strong></td>
+          <td class="done">27-05-2025</td>
+          <td class="done">08:00PM</td>
+          <td class="done">T1</td>
+          <td class="done">DONE</td>
+          <td class="done"><button class="btn btn-details">DETAILS</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="/dashboard" class="back-button">Back to Dashboard</a>
+  </div>
+
+</body>
+</html>
