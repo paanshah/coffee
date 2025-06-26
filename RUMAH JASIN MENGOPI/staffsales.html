@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Sales Summary | Rumah Jasin Mengopi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background: #f5fdf8 url('staff background_Nero_AI_Image_Upscaler_Photo_Face.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #1f1f1f;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #80A867;
+      padding: 10px 25px;
+      border-bottom: 3px solid #5c3a28;
+      position: relative;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+    }
+
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .res-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #4b3621;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: #4b3621;
+      font-weight: bold;
+    }
+
+    .container {
+      margin: 30px auto;
+      max-width: 1000px;
+      background: #39b99b;
+      padding: 30px;
+      border-radius: 20px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .controls input,
+    .controls button {
+      padding: 12px 16px;
+      border: 2px solid #5c3a28;
+      border-radius: 30px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .controls input {
+      flex: 1;
+    }
+
+    .controls button {
+      background-color: #007a58;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background-color: #5c3a28;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #d4f2e7;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #b3e0d3;
+      text-align: left;
+    }
+
+    th {
+      background-color: #5c3a28;
+      color: white;
+    }
+
+    td a {
+      color: #007a58;
+      margin-right: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    td a:hover {
+      color: #004d39;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+    }
+
+    .pagination a {
+      background-color: #5c3a28;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      width: 350px;
+      border: 4px solid #5c3a28;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 20px;
+      color: #5c3a28;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: 2px solid #5c3a28;
+      border-radius: 10px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 10px;
+      margin: 0 5px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .modal-actions button:first-child {
+      background-color: #5c3a28;
+      color: white;
+    }
+
+    .modal-actions button:last-child {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    #saleModal.show {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <img src="logo_rjm-removebg-preview.png" alt="Logo" class="logo" />
+    </div>
+    <div class="header-center">
+      <div class="res-text">Daily Sales Summary</div>
+    </div>
+    <div class="nav-buttons">
+      <a href="#">HOME</a>
+      <a href="#">LOGOUT</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="controls">
+      <input type="date" id="dateFilter" />
+      <button id="addSaleBtn">+ Add New Sale</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>DATE</th>
+          <th>DAY</th>
+          <th>TOTAL SALES (RM)</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="saleTableBody"></tbody>
+    </table>
+
+    <div class="pagination">
+      <a href="#">Back to Dashboard</a>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal" id="saleModal">
+    <div class="modal-content">
+      <h2>Add Total Sales</h2>
+      <form id="saleForm">
+        <input type="date" id="saleDate" required />
+        <input type="number" step="0.01" id="total" placeholder="Total Sales (RM)" required />
+        <div class="modal-actions">
+          <button type="submit">Add</button>
+          <button type="button" id="closeModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const sales = [
+      { date: "2025-06-25", total: 58.00 },
+      { date: "2025-06-24", total: 12.00 }
+    ];
+
+    const tableBody = document.getElementById("saleTableBody");
+    const dateFilter = document.getElementById("dateFilter");
+    const addSaleBtn = document.getElementById("addSaleBtn");
+    const saleModal = document.getElementById("saleModal");
+    const closeModal = document.getElementById("closeModal");
+    const saleForm = document.getElementById("saleForm");
+
+    function getDayName(dateStr) {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[new Date(dateStr).getDay()];
+    }
+
+    function renderTable() {
+      const selectedDate = dateFilter.value;
+      tableBody.innerHTML = "";
+
+      const filtered = selectedDate
+        ? sales.filter(s => s.date === selectedDate)
+        : sales;
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4">No records found.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(sale => {
+        const row = `
+          <tr>
+            <td>${sale.date}</td>
+            <td>${getDayName(sale.date)}</td>
+            <td>${sale.total.toFixed(2)}</td>
+            <td>
+              [ <a onclick="editSale('${sale.date}')">Edit</a> ]
+              [ <a onclick="deleteSale('${sale.date}')">Delete</a> ]
+            </td>
+          </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
+    function editSale(date) {
+      alert("Edit feature for " + date + " is not implemented.");
+    }
+
+    function deleteSale(date) {
+      const index = sales.findIndex(s => s.date === date);
+      if (index !== -1 && confirm("Delete sales for " + date + "?")) {
+        sales.splice(index, 1);
+        renderTable();
+      }
+    }
+
+    addSaleBtn.addEventListener("click", () => saleModal.classList.add("show"));
+    closeModal.addEventListener("click", () => saleModal.classList.remove("show"));
+
+    saleForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const date = document.getElementById("saleDate").value;
+      const total = parseFloat(document.getElementById("total").value);
+      const existing = sales.find(s => s.date === date);
+      if (existing) {
+        alert("Sales already exist for this date.");
+      } else {
+        sales.push({ date, total });
+        renderTable();
+        saleForm.reset();
+        saleModal.classList.remove("show");
+      }
+    });
+
+    dateFilter.addEventListener("change", renderTable);
+
+    renderTable();
+  </script>
+</body>
+</html>
