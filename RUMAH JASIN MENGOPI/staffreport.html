@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Dynamic Report Generator | Rumah Jasin Mengopi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    body {
+      background: #f5fdf8 url('staff background_Nero_AI_Image_Upscaler_Photo_Face.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: #1f1f1f;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #80A867;
+      padding: 10px 25px;
+      border-bottom: 3px solid #5c3a28;
+      position: relative;
+    }
+    .logo { width: 80px; height: 80px; }
+    .res-text {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: #4b3621;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-buttons a {
+      text-decoration: none;
+      color: #4b3621;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 1000px;
+      background: #39b99b;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    .controls input, .controls select, .controls button {
+      padding: 12px 16px;
+      font-size: 14px;
+      border: 2px solid #5c3a28;
+      border-radius: 30px;
+      outline: none;
+    }
+    .controls button {
+      background: #007a58;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .controls button:hover {
+      background: #5c3a28;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #d4f2e7;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #b3e0d3;
+      text-align: left;
+    }
+    th {
+      background-color: #5c3a28;
+      color: white;
+    }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .actions button {
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 20px;
+      border: none;
+      background: #5c3a28;
+      color: white;
+      cursor: pointer;
+    }
+    .actions button:hover {
+      background: #3a2317;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <img src="logo_rjm-removebg-preview.png" class="logo" alt="Logo"/>
+    <div class="res-text">Generate Reports</div>
+    <div class="nav-buttons">
+      <a href="#">HOME</a>
+      <a href="#">LOGOUT</a>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="controls">
+      <label>From: <input type="date" id="fromDate"></label>
+      <label>To: <input type="date" id="toDate"></label>
+      <select id="reportType" onchange="generateReport()">
+        <option value="sales">Sales</option>
+        <option value="stock">Stock</option>
+        <option value="reservation">Reservation</option>
+      </select>
+      <button onclick="generateReport()">Generate Report</button>
+    </div>
+
+    <table id="reportTable">
+      <thead><tr id="tableHeader"></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="actions">
+      <button onclick="window.print()">🖨️ Print</button>
+      <button onclick="downloadPDF()">⬇️ Download PDF</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    const data = {
+      sales: [
+        { date:"2025-06-24", sales:120.5, items:18 },
+        { date:"2025-06-25", sales:95.0, items:12 },
+        { date:"2025-06-26", sales:200.0, items:30 }
+      ],
+      stock: [
+        { item:"Latte Beans", quantity:50, restock:"2025-06-15" },
+        { item:"Matcha Powder", quantity:20, restock:"2025-06-20" },
+        { item:"Chocolate Syrup", quantity:10, restock:"2025-06-10" }
+      ],
+      reservation: [
+        { date:"2025-06-25", name:"Ali Ahmad", table:"5", status:"Pending" },
+        { date:"2025-06-24", name:"Siti Nur", table:"3", status:"Approved" },
+        { date:"2025-06-23", name:"John Doe", table:"2", status:"Cancelled" }
+      ]
+    };
+
+    function formatDateDMY(dateStr) {
+      const d = new Date(dateStr);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+
+    function generateReport() {
+      const type = document.getElementById('reportType').value;
+      const from = document.getElementById('fromDate').value;
+      const to = document.getElementById('toDate').value;
+      const thead = document.getElementById('tableHeader');
+      const tbody = document.querySelector('#reportTable tbody');
+
+      thead.innerHTML = '';
+      tbody.innerHTML = '';
+
+      let headers = [], rows = [];
+
+      if (type === 'sales') {
+        headers = ['Date','Total Sales (RM)','Items Sold'];
+        rows = data.sales.filter(r => (!from||r.date>=from) && (!to||r.date<=to));
+        rows.forEach(r => tbody.innerHTML += `<tr><td>${formatDateDMY(r.date)}</td><td>${r.sales.toFixed(2)}</td><td>${r.items}</td></tr>`);
+        let totalSales = rows.reduce((sum, r) => sum + r.sales, 0);
+        let totalItems = rows.reduce((sum, r) => sum + r.items, 0);
+        tbody.innerHTML += `<tr style="font-weight:bold; background:#e0fff2;"><td>Total</td><td>${totalSales.toFixed(2)}</td><td>${totalItems}</td></tr>`;
+      } else if (type === 'stock') {
+        headers = ['Item','Quantity','Last Restock'];
+        rows = data.stock;
+        rows.forEach(r => tbody.innerHTML += `<tr><td>${r.item}</td><td>${r.quantity}</td><td>${formatDateDMY(r.restock)}</td></tr>`);
+      } else {
+        headers = ['Date','Customer Name','Table No.','Status'];
+        rows = data.reservation.filter(r => (!from||r.date>=from) && (!to||r.date<=to));
+        rows.forEach(r => tbody.innerHTML += `<tr><td>${formatDateDMY(r.date)}</td><td>${r.name}</td><td>${r.table}</td><td>${r.status}</td></tr>`);
+      }
+
+      headers.forEach(h => thead.innerHTML += `<th>${h}</th>`);
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="${headers.length}">No records found.</td></tr>`;
+      }
+    }
+
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+      const type = document.getElementById('reportType').value.toUpperCase();
+      const now = new Date();
+      const today = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth()+1).padStart(2, '0')}/${now.getFullYear()}`;
+
+      doc.setFontSize(18);
+      doc.setFont("helvetica", "bold");
+      doc.text("RUMAH JASIN MENGOPI", 105, 20, { align: "center" });
+
+      doc.setFontSize(14);
+      doc.setFont("helvetica", "normal");
+      doc.text(`REPORT TYPE: ${type}`, 105, 30, { align: "center" });
+      doc.text(`DATE GENERATED: ${today}`, 105, 37, { align: "center" });
+
+      const headers = [...document.querySelectorAll('#reportTable thead th')].map(th => th.textContent);
+      const rows = [...document.querySelectorAll('#reportTable tbody tr')].map(tr =>
+        [...tr.children].map(td => td.textContent)
+      );
+
+      const startY = 45;
+      const colWidths = headers.map(() => 180 / headers.length);
+      let y = startY;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFillColor(92, 58, 40);
+      doc.setTextColor(255);
+      let x = 15;
+      headers.forEach((h, i) => {
+        doc.rect(x, y, colWidths[i], 10, 'F');
+        doc.text(h, x + 2, y + 7);
+        x += colWidths[i];
+      });
+
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(0);
+      y += 10;
+
+      rows.forEach(row => {
+        x = 15;
+        row.forEach((text, i) => {
+          doc.rect(x, y, colWidths[i], 10);
+          doc.text(String(text), x + 2, y + 7);
+          x += colWidths[i];
+        });
+        y += 10;
+      });
+
+      doc.save(`RJM_Report_${type}_${today.replace(/\//g, '-')}.pdf`);
+    }
+
+    window.onload = generateReport;
+  </script>
+</body>
+</html>
