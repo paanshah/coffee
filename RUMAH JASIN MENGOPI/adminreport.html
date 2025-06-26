@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rumah Jasin Mengopi - Reports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-image: url('adminbackground hd.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #80b3ff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #054cb5;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .circle-btn {
+      width: 60px;
+      height: 60px;
+      background-color: #054cb5;
+      color: #fff;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .circle-btn:hover {
+      background-color: #80b3ff;
+    }
+
+    .page-title {
+      margin: 20px;
+      font-size: 24px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 30px;
+      border-radius: 15px;
+      display: inline-block;
+      color: #054cb5;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .date-selector {
+      margin: 0 20px 20px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 25px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .date-selector label {
+      font-weight: 600;
+      color: #054cb5;
+      margin-right: 10px;
+    }
+
+    .date-selector input {
+      padding: 8px 12px;
+      border: 2px solid #80b3ff;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+    }
+
+    .date-selector input:focus {
+      outline: none;
+      border-color: #054cb5;
+    }
+
+    .reports-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .report-card {
+      background-color: #80b3ff;
+      border: 4px solid #054cb5;
+      border-radius: 25px;
+      padding: 40px 30px;
+      text-align: center;
+      cursor: pointer;
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-card:hover {
+      background-color: #5a9be6;
+      transform: scale(1.05);
+      box-shadow: 0 10px 25px rgba(5, 76, 181, 0.3);
+    }
+
+    .report-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: rotate(45deg);
+      transition: all 0.5s;
+      opacity: 0;
+    }
+
+    .report-card:hover::before {
+      animation: shine 0.5s ease-in-out;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) rotate(45deg); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateX(100%) rotate(45deg); opacity: 0; }
+    }
+
+    .report-icon {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .report-title {
+      font-size: 18px;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .report-count {
+      font-size: 36px;
+      color: white;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .report-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary-section {
+      margin: 30px 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 15px;
+      border: 3px solid #054cb5;
+    }
+
+    .summary-title {
+      font-size: 20px;
+      color: #054cb5;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .summary-item {
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(135deg, #80b3ff, #5a9be6);
+      border-radius: 12px;
+      color: white;
+    }
+
+    .summary-item h4 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary-item span {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 0;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 70vh;
+      overflow: hidden;
+      border: 3px solid #054cb5;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #80b3ff, #054cb5);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .close {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .close:hover {
+      color: #ffcccc;
+    }
+
+    .modal-body {
+      padding: 25px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .stock-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .stock-item.out-of-stock {
+      background-color: #ffebee;
+      border-left: 5px solid #f44336;
+    }
+
+    .stock-item.low-stock {
+      background-color: #fff3e0;
+      border-left: 5px solid #ff9800;
+    }
+
+    .stock-item-name {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .stock-status {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .status-out {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .status-low {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    .no-issues {
+      text-align: center;
+      padding: 30px;
+      color: #4caf50;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .reservation-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 10px;
+      background-color: #f8f9ff;
+      border-radius: 10px;
+      border-left: 5px solid #80b3ff;
+      font-weight: 500;
+    }
+
+    .reservation-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .customer-name {
+      font-size: 16px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .reservation-details {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .table-badge {
+      background: linear-gradient(135deg, #80b3ff, #054cb5);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .no-reservations {
+      text-align: center;
+      padding: 30px;
+      color: #666;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+
+      .reports-container {
+        grid-template-columns: 1fr;
+        padding: 15px;
+      }
+
+      .report-card {
+        height: 280px;
+        padding: 30px 20px;
+      }
+
+      .page-title {
+        font-size: 20px;
+        margin: 15px;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 5% auto;
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>RUMAH JASIN MENGOPI</h1>
+    <nav>
+      <button class="circle-btn" onclick="location.href='admin-dashboard.html'">BACK</button>
+      <button class="circle-btn" onclick="location.href='home.html'">HOME</button>
+    </nav>
+  </header>
+
+  <div class="page-title">
+    📊 BUSINESS REPORTS
+  </div>
+
+  <div class="date-selector">
+    <label for="reportDate">Select Date:</label>
+    <input type="date" id="reportDate" onchange="updateReports()">
+  </div>
+
+  <div class="reports-container">
+    <div class="report-card" onclick="viewSalesReport()">
+      <img src="https://img.icons8.com/ios-filled/100/000000/sales-performance.png" alt="Sales Report" class="report-icon">
+      <div class="report-title">Sales Report</div>
+      <div class="report-count" id="salesCount">1,247</div>
+      <div class="report-label">Total Sales (RM)</div>
+    </div>
+
+    <div class="report-card" onclick="viewStockReport()">
+      <img src="https://img.icons8.com/ios-filled/100/000000/warehouse.png" alt="Stock Report" class="report-icon">
+      <div class="report-title">Stock Report</div>
+      <div class="report-count" id="stockCount">342</div>
+      <div class="report-label">Items in Stock</div>
+    </div>
+
+    <div class="report-card" onclick="viewReservationReport()">
+      <img src="https://img.icons8.com/ios-filled/100/000000/calendar.png" alt="Reservation Report" class="report-icon">
+      <div class="report-title">Reservation Report</div>
+      <div class="report-count" id="reservationCount">28</div>
+      <div class="report-label">Active Reservations</div>
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <div class="summary-title">📈 Daily Summary</div>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <h4>Revenue</h4>
+        <span id="dailyRevenue">RM 1,247</span>
+      </div>
+      <div class="summary-item">
+        <h4>Orders</h4>
+        <span id="dailyOrders">45</span>
+      </div>
+      <div class="summary-item">
+        <h4>Low Stock Items</h4>
+        <span id="lowStockItems">7</span>
+      </div>
+      <div class="summary-item">
+        <h4>Pending Reservations</h4>
+        <span id="pendingReservations">12</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Details Modal -->
+  <div id="stockModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📦 Stock Management Details</h2>
+        <span class="close" onclick="closeStockModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="stockList">
+          <!-- Stock items will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reservation Details Modal -->
+  <div id="reservationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📅 Reservation Details</h2>
+        <span class="close" onclick="closeReservationModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="reservationList">
+          <!-- Reservation items will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample reservation data for different dates
+    const reservationData = {
+      '2025-06-27': [
+        { name: 'Farhan', table: 'T1', time: '14:00', pax: 4 },
+        { name: 'Siti Aishah', table: 'T3', time: '15:30', pax: 2 },
+        { name: 'Ahmad Rahman', table: 'T5', time: '16:00', pax: 6 },
+        { name: 'Nurul Aina', table: 'T2', time: '17:30', pax: 3 },
+        { name: 'Rizki Pratama', table: 'T4', time: '18:00', pax: 5 }
+      ],
+      '2025-06-28': [
+        { name: 'Faridah Johari', table: 'T1', time: '13:00', pax: 2 },
+        { name: 'Hakim Rashid', table: 'T6', time: '14:30', pax: 4 },
+        { name: 'Lia Kassim', table: 'T2', time: '16:00', pax: 3 }
+      ],
+      '2025-06-26': [
+        { name: 'Zainab Ali', table: 'T3', time: '12:30', pax: 2 },
+        { name: 'Iskandar Shah', table: 'T1', time: '13:30', pax: 4 },
+        { name: 'Maya Sari', table: 'T4', time: '15:00', pax: 6 },
+        { name: 'Arif Budiman', table: 'T5', time: '17:00', pax: 3 },
+        { name: 'Nadia Putri', table: 'T2', time: '18:30', pax: 2 }
+      ]
+    };
+
+    // Sample stock data
+    const stockItems = [
+      { name: "Macha Powder", quantity: 0, status: "out-of-stock" },
+      { name: "Coffee Latte Powder", quantity: 5, unit: "pack", status: "low-stock" },
+      { name: "Espresso Beans", quantity: 2, unit: "kg", status: "low-stock" },
+      { name: "Brown Sugar", quantity: 0, status: "out-of-stock" },
+      { name: "Milk Powder", quantity: 3, unit: "pack", status: "low-stock" },
+      { name: "Vanilla Syrup", quantity: 1, unit: "bottle", status: "low-stock" },
+      { name: "Coconut Milk", quantity: 8, unit: "pack", status: "normal" },
+      { name: "Green Tea Leaves", quantity: 15, unit: "pack", status: "normal" },
+      { name: "Honey", quantity: 0, status: "out-of-stock" }
+    ];
+
+    // Set today's date as default
+    document.getElementById('reportDate').valueAsDate = new Date();
+
+    // Sample data for different dates
+    const reportData = {
+      sales: {
+        base: 1247,
+        variation: 200
+      },
+      stock: {
+        base: 342,
+        variation: 50
+      },
+      reservations: {
+        base: 28,
+        variation: 10
+      }
+    };
+
+    function updateReports() {
+      const selectedDate = document.getElementById('reportDate').value;
+      const selectedDateObj = new Date(selectedDate);
+      const today = new Date();
+      
+      // Set time to start of day for accurate comparison
+      selectedDateObj.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      
+      // Check if selected date is in the future
+      if (selectedDateObj > today) {
+        // Future date - show no data
+        document.getElementById('salesCount').textContent = '-';
+        document.getElementById('dailyRevenue').textContent = 'RM -';
+        document.getElementById('stockCount').textContent = '-';
+        document.getElementById('reservationCount').textContent = '-';
+        document.getElementById('dailyOrders').textContent = '-';
+        document.getElementById('lowStockItems').textContent = '-';
+        document.getElementById('pendingReservations').textContent = '-';
+        return;
+      }
+      
+      const dateObj = new Date(selectedDate);
+      
+      // Simulate different data based on day of week
+      const dayOfWeek = dateObj.getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      
+      // Calculate variations based on date
+      const salesMultiplier = isWeekend ? 1.3 : 1.0;
+      const stockMultiplier = Math.random() * 0.4 + 0.8; // 0.8 to 1.2
+      const reservationMultiplier = isWeekend ? 1.5 : 1.0;
+      
+      // Update sales
+      const newSales = Math.round(reportData.sales.base * salesMultiplier + (Math.random() - 0.5) * reportData.sales.variation);
+      document.getElementById('salesCount').textContent = newSales.toLocaleString();
+      document.getElementById('dailyRevenue').textContent = `RM ${newSales.toLocaleString()}`;
+      
+      // Update stock
+      const newStock = Math.round(reportData.stock.base * stockMultiplier + (Math.random() - 0.5) * reportData.stock.variation);
+      document.getElementById('stockCount').textContent = newStock;
+      
+      // Update reservations
+      const newReservations = Math.round(reportData.reservations.base * reservationMultiplier + (Math.random() - 0.5) * reportData.reservations.variation);
+      document.getElementById('reservationCount').textContent = newReservations;
+      
+      // Update summary data
+      const dailyOrders = Math.round(newSales / 25); // Assuming average order value of RM 25
+      document.getElementById('dailyOrders').textContent = dailyOrders;
+      
+      // Calculate and sync low stock items with actual stock data
+      const lowStockItems = stockItems.filter(item => 
+        item.status === 'out-of-stock' || item.status === 'low-stock'
+      ).length;
+      document.getElementById('lowStockItems').textContent = lowStockItems;
+      
+      const pendingReservations = Math.round(newReservations * 0.4); // 40% pending
+      document.getElementById('pendingReservations').textContent = pendingReservations;
+    }
+
+    function viewSalesReport() {
+      const selectedDate = document.getElementById('reportDate').value;
+      const selectedDateObj = new Date(selectedDate);
+      const today = new Date();
+      
+      // Set time to start of day for accurate comparison
+      selectedDateObj.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      
+      if (selectedDateObj > today) {
+        alert(`📅 No sales data available for future dates.\n\nPlease select today's date or earlier to view sales reports.`);
+        return;
+      }
+      
+      alert(`Viewing detailed Sales Report for ${selectedDate}\n\nThis would normally open a detailed sales breakdown page.`);
+    }
+
+    function viewStockReport() {
+      const selectedDate = document.getElementById('reportDate').value;
+      showStockModal();
+    }
+
+    function showStockModal() {
+      const selectedDate = document.getElementById('reportDate').value;
+      const selectedDateObj = new Date(selectedDate);
+      const today = new Date();
+      
+      // Set time to start of day for accurate comparison
+      selectedDateObj.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      
+      const modal = document.getElementById('stockModal');
+      const stockList = document.getElementById('stockList');
+      
+      if (selectedDateObj > today) {
+        stockList.innerHTML = '<div class="no-issues">📅 No stock data available for future dates</div>';
+        modal.style.display = 'block';
+        return;
+      }
+      
+      // Filter items that need attention (out of stock or low stock)
+      const criticalItems = stockItems.filter(item => 
+        item.status === 'out-of-stock' || item.status === 'low-stock'
+      );
+      
+      if (criticalItems.length === 0) {
+        stockList.innerHTML = '<div class="no-issues">✅ All items are well stocked!</div>';
+      } else {
+        stockList.innerHTML = '';
+        
+        criticalItems.forEach(item => {
+          const stockItem = document.createElement('div');
+          stockItem.className = `stock-item ${item.status}`;
+          
+          let statusText = '';
+          let statusClass = '';
+          let quantityText = '';
+          
+          if (item.status === 'out-of-stock') {
+            statusText = 'Out of Stock';
+            statusClass = 'status-out';
+            quantityText = '0';
+          } else if (item.status === 'low-stock') {
+            statusText = 'Low Stock';
+            statusClass = 'status-low';
+            quantityText = `${item.quantity} ${item.unit || 'units'}`;
+          }
+          
+          stockItem.innerHTML = `
+            <div>
+              <div class="stock-item-name">${item.name}</div>
+              <small style="color: #666;">${quantityText}</small>
+            </div>
+            <div class="stock-status ${statusClass}">${statusText}</div>
+          `;
+          
+          stockList.appendChild(stockItem);
+        });
+      }
+      
+      modal.style.display = 'block';
+    }
+
+    function closeStockModal() {
+      document.getElementById('stockModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+      const stockModal = document.getElementById('stockModal');
+      const reservationModal = document.getElementById('reservationModal');
+      
+      if (event.target === stockModal) {
+        closeStockModal();
+      } else if (event.target === reservationModal) {
+        closeReservationModal();
+      }
+    }
+
+    function viewReservationReport() {
+      const selectedDate = document.getElementById('reportDate').value;
+      showReservationModal(selectedDate);
+    }
+
+    function showReservationModal(date) {
+      const selectedDateObj = new Date(date);
+      const today = new Date();
+      
+      // Set time to start of day for accurate comparison
+      selectedDateObj.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      
+      const modal = document.getElementById('reservationModal');
+      const reservationList = document.getElementById('reservationList');
+      
+      if (selectedDateObj > today) {
+        reservationList.innerHTML = '<div class="no-reservations">📅 No reservation data available for future dates</div>';
+        modal.style.display = 'block';
+        return;
+      }
+      
+      // Get reservations for the selected date
+      const dateReservations = reservationData[date] || [];
+      
+      if (dateReservations.length === 0) {
+        reservationList.innerHTML = '<div class="no-reservations">📅 No reservations for this date</div>';
+      } else {
+        reservationList.innerHTML = '';
+        
+        dateReservations.forEach(reservation => {
+          const reservationItem = document.createElement('div');
+          reservationItem.className = 'reservation-item';
+          
+          reservationItem.innerHTML = `
+            <div class="reservation-info">
+              <div class="customer-name">👤 ${reservation.name}</div>
+              <div class="reservation-details">🕐 ${reservation.time} | 👥 ${reservation.pax} pax</div>
+            </div>
+            <div class="table-badge">${reservation.table}</div>
+          `;
+          
+          reservationList.appendChild(reservationItem);
+        });
+      }
+      
+      modal.style.display = 'block';
+    }
+
+    function closeReservationModal() {
+      document.getElementById('reservationModal').style.display = 'none';
+    }
+
+    // Initialize with today's data
+    updateReports();
+  </script>
+
+</body>
+</html>

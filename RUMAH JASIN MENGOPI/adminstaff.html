@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Staff | Rumah Jasin Mengopi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-image: url('adminbackground hd.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      color: #1f1f1f;
+    }
+
+    header {
+      background-color: #80b3ff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #054cb5;
+      position: relative;
+    }
+
+    .header-left h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .header-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .header-center h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .circle-btn {
+      width: 60px;
+      height: 60px;
+      background-color: #054cb5;
+      color: #fff;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .circle-btn:hover {
+      background-color: #80b3ff;
+    }
+
+    .container {
+      margin: 30px auto;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      border: 3px solid #80b3ff;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .controls input,
+    .controls button {
+      padding: 12px 16px;
+      border: 2px solid #054cb5;
+      border-radius: 30px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .controls input {
+      flex: 1;
+    }
+
+    .controls button {
+      background-color: #054cb5;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background-color: #4073c3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #eaf2ff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #b3d1f0;
+      text-align: left;
+    }
+
+    th {
+      background-color: #054cb5;
+      color: white;
+    }
+
+    td a {
+      color: #054cb5;
+      margin-right: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    td a:hover {
+      color: #002c80;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      width: 400px;
+      border: 4px solid #054cb5;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 20px;
+      color: #054cb5;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: 2px solid #054cb5;
+      border-radius: 10px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+      padding: 10px;
+      margin: 0 5px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .modal-actions button:first-child {
+      background-color: #054cb5;
+      color: white;
+    }
+
+    .modal-actions button:last-child {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    #staffModal.show {
+      display: flex;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left">
+      <h1>RUMAH JASIN MENGOPI</h1>
+    </div>
+    <div class="header-center">
+      <h2>MANAGE STAFF</h2>
+    </div>
+    <nav>
+      <button class="circle-btn" onclick="location.href='home.html'">HOME</button>
+      <button class="circle-btn" onclick="location.href='logout.html'">LOGOUT</button>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search staff..." />
+      <button id="addStaffBtn">+ Add New Staff</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>STAFF ID</th>
+          <th>USERNAME</th>
+          <th>EMAIL</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="staffTableBody"></tbody>
+    </table>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal" id="staffModal">
+    <div class="modal-content">
+      <h2>Add Staff</h2>
+      <form id="staffForm">
+        <input type="text" id="staffId" placeholder="Staff ID (e.g. STA001)" required />
+        <input type="text" id="staffUsername" placeholder="Username" required />
+        <input type="email" id="staffEmail" placeholder="Email" required />
+        <div class="modal-actions">
+          <button type="submit">Add</button>
+          <button type="button" id="closeModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const staffList = [
+      { id: "STA001", username: "imranrahim", email: "imran@example.com" },
+      { id: "STA002", username: "aliyahashim", email: "aliya@example.com" }
+    ];
+
+    const tableBody = document.getElementById("staffTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const staffModal = document.getElementById("staffModal");
+    const staffForm = document.getElementById("staffForm");
+    const addStaffBtn = document.getElementById("addStaffBtn");
+    const closeModal = document.getElementById("closeModal");
+
+    function renderStaffTable(filter = "") {
+      tableBody.innerHTML = "";
+
+      const filtered = staffList.filter(s =>
+        s.id.toLowerCase().includes(filter.toLowerCase()) ||
+        s.username.toLowerCase().includes(filter.toLowerCase()) ||
+        s.email.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4">No staff found.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(staff => {
+        const row = `
+          <tr>
+            <td>${staff.id}</td>
+            <td>${staff.username}</td>
+            <td>${staff.email}</td>
+            <td>
+              [ <a onclick="editStaff('${staff.id}')">Edit</a> ]
+              [ <a onclick="deleteStaff('${staff.id}')">Delete</a> ]
+            </td>
+          </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
+    function deleteStaff(id) {
+      const index = staffList.findIndex(s => s.id === id);
+      if (index !== -1 && confirm("Delete this staff?")) {
+        staffList.splice(index, 1);
+        renderStaffTable(searchInput.value);
+      }
+    }
+
+    function editStaff(id) {
+      alert("Edit feature not yet implemented for staff ID " + id);
+    }
+
+    staffForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const id = document.getElementById("staffId").value.trim();
+      const username = document.getElementById("staffUsername").value.trim();
+      const email = document.getElementById("staffEmail").value.trim();
+
+      const exists = staffList.find(s => s.id === id);
+      if (exists) {
+        alert("Staff ID already exists!");
+        return;
+      }
+
+      staffList.push({ id, username, email });
+      staffForm.reset();
+      staffModal.classList.remove("show");
+      renderStaffTable(searchInput.value);
+    });
+
+    searchInput.addEventListener("input", () => renderStaffTable(searchInput.value));
+    addStaffBtn.addEventListener("click", () => staffModal.classList.add("show"));
+    closeModal.addEventListener("click", () => staffModal.classList.remove("show"));
+
+    renderStaffTable();
+  </script>
+
+</body>
+</html>

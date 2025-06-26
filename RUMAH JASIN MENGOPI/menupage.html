@@ -1,372 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Rumah Jasin Mengopi</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rumah Jasin Mengopi - Menu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   <style>
-    body {
-	font-family: Arial, sans-serif;
-	background-image: url('backgroundcust_Nero_AI_Image_Upscaler_Photo_Face.jpeg');
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	margin: 0;
-	padding: 0;
-	}
-	.header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	background: #d7b899;
-	padding: 10px 20px;
-	height: 70px;
-	}
+    /* ========== GLOBAL & HEADER ========== */
+    body { font-family: Arial, sans-serif; background: url('backgroundcust_Nero_AI_Image_Upscaler_Photo_Face.jpeg') center/cover fixed no-repeat; margin:0; }
+    .header { display:flex; align-items:center; justify-content:space-between; background:#d7b899; padding:10px 20px; position:relative; }
+    .logo { width:80px; height:80px; }
+    .header-center { position:absolute; left:50%; transform:translateX(-50%); }
+    .res-text { font-family:'Playfair Display', serif; font-size:24px; color:#4b3621; }
+    .header-nav { display:flex; gap:10px; }
+    .header-nav a { text-decoration:none; color:#4b3621; font-weight:bold; font-size:20px; }
 
+    /* ========== SEARCH & TABS ========== */
+    .search-container { text-align:center; margin:10px; }
+    .search-container input { padding:8px; width:200px; font-size:16px; border-radius:5px; border:1px solid #ccc; }
+    .category-buttons { display:flex; justify-content:center; gap:10px; margin-top:20px; }
+    .tab-btn { padding:10px 20px; background:#6b4f3c; color:white; border:none; border-radius:5px; cursor:pointer; transition:transform .2s; }
+    .tab-btn.active { background:#9b7b62; }
+    .tab-btn:hover { transform:scale(1.1); }
 
-    .header-left {
-      display: flex;
-      align-items: center;
+    /* ========== PRODUCT CARDS ========== */
+    .container { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin:20px; }
+    .product-grid { display:none; flex-wrap:wrap; justify-content:center; gap:20px; width:100%; }
+    .product-grid.active { display:flex; }
+    .card { background:#fff; padding:20px; border-radius:10px; width:280px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.15); transition:transform .25s,box-shadow .25s; }
+    .card:hover { transform:scale(1.05); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+    .card img { width:100%; height:200px; object-fit:cover; border-radius:8px; }
+    .product-name { margin:10px 0; font-size:18px; color:#333; font-weight:bold; }
+    .price-label { display:block; margin:4px 0; cursor:pointer; }
+    .qty { display:flex; justify-content:center; align-items:center; margin-top:10px; }
+    .qty button { padding:5px 10px; background:#eee; border:none; border-radius:4px; cursor:pointer; transition:transform .2s; }
+    .qty button:hover { transform:scale(1.2); }
+    .qty input { width:40px; text-align:center; border:none; background:#eee; margin:0 5px; font-size:16px; }
+
+    /* ========== CART SUMMARY ========== */
+    .confirm-order { text-align:center; margin:40px 0; }
+    .confirm-order button, .view-cart-btn { padding:12px 30px; background:#6b4f3c; color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; transition:transform .2s; }
+    .confirm-order button:hover, .view-cart-btn:hover { transform:scale(1.05); }
+
+    .view-cart-btn { position:fixed; bottom:20px; right:20px; box-shadow:0 4px 10px rgba(0,0,0,0.3); display:none; z-index:100; }
+
+    /* ========== CART MODAL ========== */
+    .cart-modal { position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:999; }
+    .cart-content { background:#fff; padding:20px; width:90%; max-width:400px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.2); }
+    .cart-content h2 { margin-top:0; }
+    .cart-item { display:flex; justify-content:space-between; margin:8px 0; }
+    .cart-actions { display:flex; justify-content:space-between; margin-top:20px; }
+    .cart-actions button { padding:10px 15px; border:none; border-radius:5px; cursor:pointer; }
+    .close-cart { background:#ccc; }
+    .confirm-cart { background:#6b4f3c; color:white; }
+
+    /* Style untuk selection yang belum dipilih */
+    .card.no-price-selected { opacity: 0.7; }
+    .error-message { color: #e74c3c; font-size: 14px; margin-top: 5px; }
+
+    @media (max-width:768px) {
+      .container { margin:10px; gap:10px; }
+      .card { width:calc(100% - 40px); }
     }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-    }
-
-    .header-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .res-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 600;
-      color: #4b3621;
-    }
-	
-    .nav-buttons {
-	display: flex;
-	justify-content: center;
-	gap: 10px;         
-	margin: 10px 0;   
-	}
-
-	
-    .nav-buttons a {
-	text-decoration: none;
-	 color: #4b3621;
-	font-weight: bold;
-	font-size: 20px;         
-	padding: 5px 10px;       
-	letter-spacing: 0.5px;   
-	}
-
-    .top-buttons button 
-	{ margin-left: 8px; padding: 8px 15px; background: #6b4f3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .search-container 
-	{ text-align: center; margin: 10px; }
-    .search-container input 
-	{ padding: 8px; width: 200px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc; }
-    .nav-buttons 
-	{ text-align: center; margin: 10px 0; }
-    .tab-btn 
-	{ padding: 10px 20px; margin: 5px; background: #6b4f3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    .tab-btn.active 
-	{ background: #9b7b62; }
-    .container 
-	{ display: flex; justify-content: center; flex-wrap: wrap; margin: 20px; }
-    .product-grid 
-	{ display: none; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; }
-    .product-grid.active 
-	{ display: flex; }
-    .card {
-	background: #fff;
-	padding: 15px;
-	border-radius: 8px;
-	width: 220px; /* ⬆️ Make card a bit wider */
-	text-align: center;
-	box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-	transition: transform 0.2s;
-	}
-
-	.card {
-	background: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	width: 280px; /* Increased width */
-	text-align: center;
-	box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Stronger shadow for prominence */
-	transition: transform 0.2s;
-	}
-
-	.card img {
-	width: 100%;
-	height: 220px; /* Increased image height */
-	object-fit: cover;
-	object-position: center;
-	border-radius: 8px;
-	background-color: #f9f4ef;
-	}
-
-    .qty {
-	display: flex; 
-	justify-content: center; 
-	align-items: center; 
-	margin-top: 10px; }
-	
-    .qty button {
-	padding: 5px 10px; 
-	background: #eee; 
-	border: none; 
-	border-radius: 4px; 
-	cursor: pointer; }
-	
-    .qty input { 
-	width: 30px; 
-	text-align: center; 
-	border: none; 
-	background: #eee; 
-	margin: 0 5px; }
-	
-    .confirm-order { 
-	text-align: center;
-	margin: 40px 0; }
-	
-    .confirm-order button {
-	padding: 12px 30px; 
-	background: #6b4f3c;
-	color: white; border: none; 
-	border-radius: 6px; 
-	font-size: 16px; 
-	cursor: pointer; }
-	
   </style>
 </head>
 <body>
 
-  <!-- Header with Home and Logout -->
+  <!-- HEADER -->
   <div class="header">
-    <div class="header-left">
-      <img src="logo_rjm-removebg-preview.png" alt="Logo" class="logo" />
-    </div>
-
-    <div class="header-center">
-      <div class="res-text">MENU</div>
-    </div>
-
-    <div class="nav-buttons">
+    <img src="logo_rjm-removebg-preview.png" class="logo" alt="Logo">
+    <div class="header-center"><div class="res-text">MENU</div></div>
+    <div class="header-nav">
       <a href="#">HOME</a>
       <a href="#">LOGOUT</a>
     </div>
   </div>
 
-  <!-- Search Field -->
+  <!-- SEARCH -->
   <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterCards()" />
+    <input type="text" id="searchInput" placeholder="Search..." oninput="filterCards()" />
   </div>
 
-  <!-- Category Tabs -->
-  <div class="nav-buttons">
+  <!-- TABS -->
+  <div class="category-buttons">
     <button class="tab-btn active" onclick="showCategory('coffee')">COFFEE</button>
     <button class="tab-btn" onclick="showCategory('pastries')">PASTRIES</button>
     <button class="tab-btn" onclick="showCategory('merchandise')">MERCHANDISE</button>
   </div>
 
-  <!-- Product Grids -->
+  <!-- PRODUCTS -->
   <div class="container">
-    <!-- Coffee Section -->
+    <!-- Coffee -->
     <div class="product-grid active" id="coffee">
-      <div class="card">
-        <img src="lattepic.png" alt="Latte">
-        <h3 class="product-name">COFFEE LATTE</h3>
-        <label><input type="radio" name="Latte_temp" value="cold"> COLD RM7.00</label><br>
-        <label><input type="radio" name="Latte_temp" value="hot"> HOT RM6.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="mochapic.png" alt="Mocha">
-        <h3 class="product-name">MOCHA</h3>
-        <label><input type="radio" name="Mocha_temp" value="cold"> COLD RM7.00</label><br>
-        <label><input type="radio" name="Mocha_temp" value="hot"> HOT RM6.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="matchapic.png"" alt="Matcha">
-        <h3 class="product-name">MATCHA</h3>
-        <label><input type="radio" name="Matcha_temp" value="cold"> COLD RM7.00</label><br>
-        <label><input type="radio" name="Matcha_temp" value="hot"> HOT RM6.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="coklatpic.png" alt="Chocolate">
-        <h3 class="product-name">CHOCOLATE</h3>
-        <label><input type="radio" name="Chocolate_temp" value="cold"> COLD RM7.00</label><br>
-        <label><input type="radio" name="Chocolate_temp" value="hot"> HOT RM6.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
+      <div class="card"><img src="lattepic.png"><div class="product-name">COFFEE LATTE</div><span class="price-label"><input type="radio" name="Latte_price" value="6"> Hot RM6</span><span class="price-label"><input type="radio" name="Latte_price" value="7"> Cold RM7</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="mochapic.png"><div class="product-name">MOCHA</div><span class="price-label"><input type="radio" name="Mocha_price" value="6"> Hot RM6</span><span class="price-label"><input type="radio" name="Mocha_price" value="7"> Cold RM7</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="matchapic.png"><div class="product-name">MATCHA</div><span class="price-label"><input type="radio" name="Matcha_price" value="6"> Hot RM6</span><span class="price-label"><input type="radio" name="Matcha_price" value="7"> Cold RM7</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="coklatpic.png"><div class="product-name">CHOCOLATE</div><span class="price-label"><input type="radio" name="Chocolate_price" value="6"> Hot RM6</span><span class="price-label"><input type="radio" name="Chocolate_price" value="7"> Cold RM7</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
     </div>
 
-    <!-- Pastries Section -->
+    <!-- Pastries -->
     <div class="product-grid" id="pastries">
-      <div class="card">
-        <img src="croissantpic.png" alt="Croissant">
-        <h3 class="product-name">CROISSANT</h3>
-        <label><input type="radio"> RM10.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="currypuffpic.png" alt="Curry Puff">
-        <h3 class="product-name">CURRY PUFF</h3>
-        <label><input type="radio"> RM4.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="cheesetartpic.png" alt="Cheese Tart">
-        <h3 class="product-name">CHEESE TART</h3>
-        <label><input type="radio"> RM11.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="crollpic.png" alt="Cinnamon Roll">
-        <h3 class="product-name">CINNAMON ROLL</h3>
-        <label><input type="radio"> RM13.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="slicecakepic.png" alt="Slice Cake">
-        <h3 class="product-name">SLICE CAKE </h3>
-        <label><input type="radio"> RM5.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
+      <div class="card"><img src="croissantpic.png"><div class="product-name">CROISSANT</div><span class="price-label"><input type="radio" name="Croissant_price" value="10"> RM10</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="currypuffpic.png"><div class="product-name">CURRY PUFF</div><span class="price-label"><input type="radio" name="CurryPuff_price" value="4"> RM4</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="cheesetartpic.png"><div class="product-name">CHEESE TART</div><span class="price-label"><input type="radio" name="CheeseTart_price" value="11"> RM11</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="crollpic.png"><div class="product-name">CINNAMON ROLL</div><span class="price-label"><input type="radio" name="CinnamonRoll_price" value="13"> RM13</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="slicecakepic.png"><div class="product-name">SLICE CAKE</div><span class="price-label"><input type="radio" name="SliceCake_price" value="5"> RM5</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
     </div>
 
-    <!-- Merchandise Section -->
+    <!-- Merchandise -->
     <div class="product-grid" id="merchandise">
-      <div class="card">
-        <img src="mugpic.png" alt="Coffee Mug">
-        <h3 class="product-name">COFFEE MUG RJM</h3>
-        <label><input type="radio"> RM15.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="totebagpic.jpg" alt="Tote Bag">
-        <h3 class="product-name">TOTE BAG RJM</h3>
-        <label><input type="radio"> RM25.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="tshirtpic.png" alt="T-Shirt">
-        <h3 class="product-name">T-SHIRT RJM</h3>
-        <label><input type="radio"> RM35.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="cappic.png" alt="Cap">
-        <h3 class="product-name">CAP RJM</h3>
-        <label><input type="radio"> RM20.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
-      </div>
-      <div class="card">
-        <img src="tublerpic.png" alt="Stainless Tumbler">
-        <h3 class="product-name">STAINLESS TUMBLER RJM</h3>
-        <label><input type="radio"> RM45.00</label>
-        <div class="qty">
-          <button onclick="adjustQty(this, -1)">-</button>
-          <input type="text" value="0">
-          <button onclick="adjustQty(this, 1)">+</button>
-        </div>
+      <div class="card"><img src="mugpic.png"><div class="product-name">COFFEE MUG RJM</div><span class="price-label"><input type="radio" name="Mug_price" value="15"> RM15</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="totebagpic.jpg"><div class="product-name">TOTE BAG RJM</div><span class="price-label"><input type="radio" name="ToteBag_price" value="25"> RM25</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="tshirtpic.png"><div class="product-name">T-SHIRT RJM</div><span class="price-label"><input type="radio" name="TShirt_price" value="35"> RM35</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="cappic.png"><div class="product-name">CAP RJM</div><span class="price-label"><input type="radio" name="Cap_price" value="20"> RM20</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+      <div class="card"><img src="tublerpic.png"><div class="product-name">STAINLESS TUMBLER RJM</div><span class="price-label"><input type="radio" name="Tumbler_price" value="45"> RM45</span><div class="qty"><button onclick="adjustQty(this,-1)">-</button><input value="0" readonly><button onclick="adjustQty(this,1)">+</button></div></div>
+    </div>
+  </div>
+
+  <!-- ORDER CART -->
+  <div class="confirm-order"><button onclick="confirmOrder()">Confirm Order</button></div>
+
+  <!-- VIEW CART BUTTON -->
+  <button class="view-cart-btn" id="viewCartBtn" onclick="openCart()">View Cart</button>
+
+  <!-- CART MODAL -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+      <h2>Your Cart</h2>
+      <div id="cartItems"></div>
+      <div class="cart-item" style="font-weight:bold;"><span>Total</span><span id="cartTotal">RM0.00</span></div>
+      <div class="cart-actions">
+        <button class="close-cart" onclick="closeCart()">Close</button>
+        <button class="confirm-cart" onclick="checkout()">Checkout</button>
       </div>
     </div>
   </div>
 
-  <!-- Confirm Order -->
-  <div class="confirm-order">
-    <button onclick="confirmOrder()">Confirm Order</button>
-  </div>
-
-  <!-- Script -->
   <script>
     const categories = ['coffee','pastries','merchandise'];
-    function showCategory(id) {
-      categories.forEach(c => {
-        document.getElementById(c).classList.remove('active');
-        document.querySelector(`.tab-btn[onclick="showCategory('${c}')"]`).classList.remove('active');
+
+    // Initialize cart on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add event listeners untuk radio buttons
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          const card = this.closest('.card');
+          clearPriceSelectionError(card);
+          updateViewCart();
+        });
       });
-      document.getElementById(id).classList.add('active');
-      document.querySelector(`.tab-btn[onclick="showCategory('${id}')"]`).classList.add('active');
+      
+      // Initial cart update
+      updateViewCart();
+    });
+
+    function showCategory(id){
+      categories.forEach(c => {
+        document.getElementById(c).classList.toggle('active', c===id);
+        document.querySelector(`.tab-btn[onclick="showCategory('${c}')"]`)
+          .classList.toggle('active', c===id);
+      });
+      filterCards();
+      updateViewCart();
     }
 
     function adjustQty(btn,delta){
-      const inp = btn.parentElement.querySelector('input');
-      const v = Math.max(0,(parseInt(inp.value)||0)+delta);
-      inp.value = v;
+      const card = btn.closest('.card');
+      const inp = btn.closest('.qty').querySelector('input');
+      const currentQty = parseInt(inp.value) || 0;
+      const newQty = Math.max(0, currentQty + delta);
+      
+      // Cek jika user cuba menambah quantity tanpa pilih harga
+      if(newQty > 0 && !hasSelectedPrice(card)) {
+        showPriceSelectionError(card);
+        return;
+      }
+      
+      inp.value = newQty;
+      clearPriceSelectionError(card);
+      updateViewCart();
+    }
+
+    function hasSelectedPrice(card) {
+      const radioButtons = card.querySelectorAll('input[type="radio"]');
+      return Array.from(radioButtons).some(radio => radio.checked);
+    }
+
+    function showPriceSelectionError(card) {
+      clearPriceSelectionError(card);
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = 'Sila pilih pilihan harga terlebih dahulu';
+      card.appendChild(errorDiv);
+      card.classList.add('no-price-selected');
+    }
+
+    function clearPriceSelectionError(card) {
+      const errorMsg = card.querySelector('.error-message');
+      if(errorMsg) {
+        errorMsg.remove();
+      }
+      card.classList.remove('no-price-selected');
     }
 
     function filterCards(){
       const q = document.getElementById('searchInput').value.toLowerCase();
-      const active = document.querySelector('.product-grid.active');
-      active.querySelectorAll('.card').forEach(c=>{
-        const name = c.querySelector('.product-name').innerText.toLowerCase();
-        c.style.display = name.includes(q)?'':'none';
+      document.querySelectorAll('.product-grid.active .card').forEach(card => {
+        const name = card.querySelector('.product-name').innerText.toLowerCase();
+        card.style.display = name.includes(q)? '' : 'none';
       });
     }
 
-    function confirmOrder(){
-      alert('Order confirmed! ✅');
+    function updateViewCart(){
+      let hasItems = false;
+      document.querySelectorAll('.card').forEach(card => {
+        const qty = parseInt(card.querySelector('.qty input').value) || 0;
+        if(qty > 0 && hasSelectedPrice(card)) {
+          hasItems = true;
+        }
+      });
+      
+      const viewCartBtn = document.getElementById('viewCartBtn');
+      if(hasItems) {
+        viewCartBtn.style.display = 'block';
+      } else {
+        viewCartBtn.style.display = 'none';
+      }
+    }
+
+    function getPrice(card){
+      const checkedRadio = card.querySelector('input[type=radio]:checked');
+      return checkedRadio ? parseFloat(checkedRadio.value) : 0;
+    }
+
+    function getSelectedOption(card) {
+      const checkedRadio = card.querySelector('input[type=radio]:checked');
+      if (!checkedRadio) return '';
+      
+      const label = checkedRadio.closest('.price-label').textContent.trim();
+      return label.replace(/^.*?\s/, ''); // Remove radio button part
+    }
+
+    function openCart(){
+      const container = document.getElementById('cartItems');
+      container.innerHTML = '';
+      let total=0;
+      let hasInvalidItems = false;
+      
+      document.querySelectorAll('.card').forEach(card=>{
+        const qty=parseInt(card.querySelector('.qty input').value);
+        if(qty>0){
+          const name=card.querySelector('.product-name').innerText;
+          const price=getPrice(card);
+          const option=getSelectedOption(card);
+          
+          if(price === 0) {
+            hasInvalidItems = true;
+            return;
+          }
+          
+          const sub = qty*price;
+          total+=sub;
+          const row=document.createElement('div');
+          row.className='cart-item';
+          const displayName = option ? `${name} (${option})` : name;
+          row.innerHTML=`<span>${displayName} x ${qty}</span><span>RM${sub.toFixed(2)}</span>`;
+          container.appendChild(row);
+        }
+      });
+      
+      if(hasInvalidItems) {
+        alert('Sila pilih pilihan harga untuk semua item sebelum melihat cart');
+        return;
+      }
+      
+      document.getElementById('cartTotal').innerText=`RM${total.toFixed(2)}`;
+      document.getElementById('cartModal').style.display = 'flex';
+    }
+
+    function closeCart(){ 
+      document.getElementById('cartModal').style.display='none'; 
+    }
+
+    function checkout(){
+      const totalElement = document.getElementById('cartTotal');
+      
+      if(totalElement.innerText === 'RM0.00') {
+        alert('Cart kosong!');
+        return;
+      }
+      
+      alert('Checkout total ' + totalElement.innerText + '\nTerima kasih atas pesanan anda!');
+      
+      // Clear semua item
+      document.querySelectorAll('.qty input').forEach(i => i.value = 0);
+      document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+      updateViewCart();
+      closeCart();
+    }
+
+    function confirmOrder(){ 
+      // Cek jika ada item tanpa pilihan harga
+      let hasInvalidItems = false;
+      document.querySelectorAll('.card').forEach(card => {
+        const qty = parseInt(card.querySelector('.qty input').value);
+        if(qty > 0 && !hasSelectedPrice(card)) {
+          hasInvalidItems = true;
+          showPriceSelectionError(card);
+        }
+      });
+      
+      if(hasInvalidItems) {
+        alert('Sila pilih pilihan harga untuk semua item sebelum mengesahkan pesanan');
+        return;
+      }
+      
+      alert('Order confirmed ✅'); 
     }
   </script>
 </body>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Products | Rumah Jasin Mengopi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+    body {
+      background-image: url('adminbackground hd.png');
+      background-size: cover; background-repeat: no-repeat;
+      background-position: center center; background-attachment: fixed;
+      color: #1f1f1f;
+    }
+    header {
+      background-color: #80b3ff; padding: 15px;
+      display: flex; justify-content: space-between;
+      align-items: center; border-bottom: 3px solid #054cb5;
+      position: relative;
+    }
+    .header-left h1 {
+      font-size: 20px; font-weight: 700; color: white;
+    }
+    .header-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+    }
+    .header-center h2 {
+      font-family: 'Playfair Display', serif; font-size: 24px;
+      font-weight: 600; color: white;
+    }
+    nav {
+      display: flex; gap: 10px;
+    }
+    .circle-btn {
+      padding: 12px 16px;
+      background-color: #054cb5;
+      color: #fff; border-radius: 30px;
+      border: none; font-size: 12px;
+      font-weight: 700; cursor: pointer;
+      transition: 0.3s;
+    }
+    .circle-btn:hover {
+      background-color: #80b3ff;
+    }
+    .container {
+      margin: 30px auto; max-width: 1000px;
+      background: rgba(255,255,255,0.95);
+      padding: 30px; border-radius: 20px; border: 3px solid #80b3ff;
+    }
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .controls input, .controls button {
+      padding: 12px 16px; border: 2px solid #054cb5;
+      border-radius: 30px; font-size: 14px; outline: none;
+    }
+    .controls input {
+      flex: 1;
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      background-color: #eaf2ff; border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 14px 16px; border-bottom: 1px solid #b3d1f0;
+      text-align: left;
+    }
+    th {
+      background-color: #054cb5; color: white;
+    }
+    td a {
+      color: #054cb5; margin-right: 10px;
+      font-weight: bold; cursor: pointer;
+    }
+    td a:hover {
+      color: #002c80;
+    }
+    .modal {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.6); display: none;
+      justify-content: center; align-items: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: #fff; padding: 30px;
+      border-radius: 20px; width: 400px;
+      border: 4px solid #054cb5;
+    }
+    .modal-content h2 {
+      margin-bottom: 20px; color: #054cb5;
+      text-align: center;
+    }
+    .modal-content input {
+      width: 100%; margin-bottom: 15px;
+      padding: 10px 15px; font-size: 14px;
+      border: 2px solid #054cb5;
+      border-radius: 10px;
+    }
+    .modal-actions {
+      display: flex; justify-content: space-between;
+      margin-top: 10px;
+    }
+    .modal-actions button {
+      flex: 1; padding: 10px; margin: 0 5px;
+      font-weight: bold; border-radius: 10px;
+      cursor: pointer; border: none;
+    }
+    .modal-actions button:first-child {
+      background-color: #054cb5; color: white;
+    }
+    .modal-actions button:last-child {
+      background-color: #ccc; color: #333;
+    }
+    #prodModal.show {
+      display: flex;
+    }
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column; align-items: flex-start;
+      }
+      nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-left"><h1>RUMAH JASIN MENGOPI</h1></div>
+    <div class="header-center"><h2>MANAGE PRODUCTS</h2></div>
+    <nav>
+      <button class="circle-btn" onclick="location.href='home.html'">HOME</button>
+      <button class="circle-btn" onclick="location.href='logout.html'">LOGOUT</button>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container">
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search products..." />
+      <button id="addProductBtn">+ Add New Product</button>
+    </div>
+
+    <!-- Category Filter Buttons -->
+    <div style="margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 10px;">
+      <button class="circle-btn" onclick="filterCategory('All')">All</button>
+      <button class="circle-btn" onclick="filterCategory('Coffee')">Coffee</button>
+      <button class="circle-btn" onclick="filterCategory('Pastries')">Pastries</button>
+      <button class="circle-btn" onclick="filterCategory('Merchandise')">Merchandise</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>PRODUCT ID</th>
+          <th>NAME</th>
+          <th>PRICE (RM)</th>
+          <th>CATEGORY</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody"></tbody>
+    </table>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal" id="prodModal">
+    <div class="modal-content">
+      <h2>Add Product</h2>
+      <form id="prodForm">
+        <input type="text" id="prodId" placeholder="Product ID (e.g. PRD001)" required />
+        <input type="text" id="prodName" placeholder="Name" required />
+        <input type="number" step="0.01" id="prodPrice" placeholder="Price (RM)" required />
+        <input type="text" id="prodCategory" placeholder="Category (e.g. Coffee)" required />
+        <div class="modal-actions">
+          <button type="submit">Add</button>
+          <button type="button" id="closeProdModal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { id: "PRD001", name: "House Blend", price: 12.50, category: "Coffee" },
+      { id: "PRD002", name: "Espresso", price: 8.00, category: "Coffee" },
+      { id: "PRD003", name: "Croissant", price: 6.00, category: "Pastries" },
+      { id: "PRD004", name: "RJM Mug", price: 15.00, category: "Merchandise" }
+    ];
+
+    let currentCategoryFilter = "All";
+
+    const tableBody = document.getElementById("productTableBody");
+    const searchInput = document.getElementById("searchInput");
+    const prodModal = document.getElementById("prodModal");
+    const prodForm = document.getElementById("prodForm");
+    const addProductBtn = document.getElementById("addProductBtn");
+    const closeProdModal = document.getElementById("closeProdModal");
+
+    function renderProducts() {
+      const keyword = searchInput.value.toLowerCase();
+      tableBody.innerHTML = "";
+
+      const filtered = products.filter(p =>
+        (currentCategoryFilter === "All" || p.category === currentCategoryFilter) &&
+        (p.id.toLowerCase().includes(keyword) ||
+         p.name.toLowerCase().includes(keyword) ||
+         p.category.toLowerCase().includes(keyword))
+      );
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5">No products found.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const row = `
+          <tr>
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>${p.price.toFixed(2)}</td>
+            <td>${p.category}</td>
+            <td>
+              [ <a onclick="editProduct('${p.id}')">Edit</a> ]
+              [ <a onclick="deleteProduct('${p.id}')">Delete</a> ]
+            </td>
+          </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategoryFilter = cat;
+      renderProducts();
+    }
+
+    function deleteProduct(id) {
+      const idx = products.findIndex(p => p.id === id);
+      if (idx !== -1 && confirm(`Delete product ${id}?`)) {
+        products.splice(idx,1);
+        renderProducts();
+      }
+    }
+
+    function editProduct(id) {
+      alert("Edit feature not implemented yet for " + id);
+    }
+
+    prodForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const id = document.getElementById("prodId").value.trim();
+      const name = document.getElementById("prodName").value.trim();
+      const price = parseFloat(document.getElementById("prodPrice").value);
+      const category = document.getElementById("prodCategory").value.trim();
+
+      if (products.find(p=>p.id === id)) {
+        alert("Product ID already exists!");
+        return;
+      }
+
+      products.push({ id, name, price, category });
+      prodForm.reset();
+      prodModal.classList.remove("show");
+      renderProducts();
+    });
+
+    addProductBtn.addEventListener("click", () => prodModal.classList.add("show"));
+    closeProdModal.addEventListener("click", () => prodModal.classList.remove("show"));
+    searchInput.addEventListener("input", () => renderProducts());
+
+    renderProducts();
+  </script>
+</body>
+</html>

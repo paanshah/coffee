@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rumah Jasin Mengopi - Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-image: url('adminbackground hd.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      color: #333;
+    }
+
+    header {
+      background-color: #80b3ff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #054cb5;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    .circle-btn {
+      width: 60px;
+      height: 60px;
+      background-color: #054cb5;
+      color: #fff;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .circle-btn:hover {
+      background-color: #80b3ff;
+    }
+
+    .welcome {
+      margin: 20px;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 12px 24px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    .welcome span {
+      color: #2e8b8b;
+      font-weight: 700;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: #80b3ff;
+      border: 4px solid #054cb5;
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      cursor: pointer;
+      height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .card:hover {
+      background-color: #5a9be6;
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 10px;
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>RUMAH JASIN MENGOPI</h1>
+    <nav>
+      <button class="circle-btn" onclick="location.href='home.html'">HOME</button>
+      <button class="circle-btn" onclick="location.href='logout.html'">LOGOUT</button>
+    </nav>
+  </header>
+
+  <div class="welcome">
+    Welcome back, <span id="adminName">Admin’s Name</span>!
+  </div>
+
+  <div class="dashboard">
+    <div class="card" onclick="window.location.href='adminstaff.html'">
+      <img src="https://img.icons8.com/ios-filled/100/000000/conference-call.png" alt="Manage Staff">
+      <h3>MANAGE STAFF</h3>
+    </div>
+
+    <div class="card" onclick="window.location.href='adminproduct.html'">
+      <img src="https://img.icons8.com/ios-filled/100/000000/product.png" alt="Manage Products">
+      <h3>MANAGE PRODUCTS</h3>
+    </div>
+
+    <div class="card" onclick="window.location.href='adminreport.html'">
+      <img src="https://img.icons8.com/ios-filled/100/000000/task.png" alt="Sales Reports">
+      <h3>SALES REPORTS</h3>
+    </div>
+  </div>
+
+  <script>
+    const adminName = "Imran";
+    document.getElementById("adminName").textContent = adminName;
+  </script>
+
+</body>
+</html>
